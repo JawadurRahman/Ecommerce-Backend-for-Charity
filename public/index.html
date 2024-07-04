@@ -1,0 +1,311 @@
+<!--
+  Purpose: This page displays all the items than can be found in the estore.
+  Authors: 
+  Femi - Sidebar
+  Liam Penton - JavaScript
+  Jawadur - JavaScript
+  Devon Leigh - Menu-bar
+  Rahabar Mahmud - Design, content, footer
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--Linking the css file-->
+    <link rel="stylesheet" href="./styles/body.css" />
+    <link rel="stylesheet" href="./styles/nav.css" />
+    <link rel="stylesheet" href="./styles/header.css" />
+    <link rel="stylesheet" href="./styles/footer.css" />
+    <link rel="stylesheet" href="./styles/index.css" />
+    <link rel="stylesheet" href="./styles/estore.css" />
+
+    <!-- <link
+      rel="stylesheet"
+      href="path/to/font-awesome/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <!--Linking the javascript file-->
+    <!-- <script src="../../scripts/estore.js" async></script>
+    <script defer src="../../scripts/main.js" async></script> -->
+
+    <title>Saint Margaret's Bay Store</title>
+  </head>
+
+  <!--The header containing the menu bar-->
+    <header>
+      <div class="header-container">
+        <div class="org-name">
+          <a class="org-logo" href="../../index.html">
+          <p><a href="../../index.html">French Village Forest <b>Conservation</b></a></p>
+        </div>
+        <div class="menu-btn">
+          <div class="menu-btn_burger"></div>
+          <div id="nav-bar" class="nav-bar">
+            <nav>
+              <ul>
+                <li><a href="./login.html">Login</a></li>
+                <li><a href="./registration.html">Register</a></li>
+                <li><a href="./index.html">Marketplace</a></li>
+                <li><a href="./cart.html">Cart</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    
+    <body style="background-color: rgb(243, 232, 211);">
+
+      <aside class="sidebar">
+        <!-- Sidebar content goes here -->
+        <h4>Price</h4>
+        <label for="min-price">Min Price:</label>
+        <input type="number" id="min-price" placeholder="Min Price">
+        <label for="max-price">Max Price:</label>
+        <input type="number" id="max-price" placeholder="Max Price">
+        <button onclick="filterProducts()">Apply</button>
+    </aside>
+
+    <script>
+      function filterProducts() {
+    // Get the min and max prices from the input fields
+    var minPrice = parseFloat(document.getElementById("min-price").value);
+    var maxPrice = parseFloat(document.getElementById("max-price").value);
+
+    // Get all product elements
+    var products = document.querySelectorAll(".pro");
+
+    // Loop through each product
+    products.forEach(function (product) {
+        // Get the price of the current product
+        // Assuming the price is inside a <h4> tag with class 'shop-item-price'
+        var priceText = product.querySelector(".shop-item-price").innerText;
+        var productPrice = parseFloat(priceText.replace(/[^0-9.-]+/g, "")); // Removes non-numeric characters
+
+        // Check if the product's price is within the specified range
+        var isInRange = true;
+
+        if (!isNaN(minPrice) && productPrice < minPrice) {
+            isInRange = false;
+        }
+
+        if (!isNaN(maxPrice) && productPrice > maxPrice) {
+            isInRange = false;
+        }
+
+        // Display or hide the product based on the range check
+        if ((isNaN(minPrice) && isNaN(maxPrice)) || isInRange) {
+            product.style.display = "block";
+        } else {
+            product.style.display = "none";
+        }
+    });
+}
+
+    </script>
+
+        <div class="main-content">
+
+          <!--The banner at the start of the page-->
+            <section id="heroFall">
+                <h1>Marketplace</h1>
+                <!-- <p>Save more with coupons during Fall</p> -->
+              </section>
+          
+              <!--Description of the page-->
+              <section id="product1" class="section-p1">
+                <h2>Featured Items</h2>
+                <p style="color:black">Collection Items</p>
+          
+                <!--The container that contains all the items-->
+                <div class="pro-container">
+                </div>
+              </section>
+
+          
+              <!--The footer of the page-->
+              <footer class="section-p1">
+                <div class="col">
+                  <h4>Contact Us</h4>
+                  <p>
+                    <strong>Address:</strong> 71 St Pauls Ln, French Village, NS B3Z 4E3
+                  </p>
+                  <p><strong>Phone:</strong> 111 222 333/ (+1) 444 555 666</p>
+                  <p><strong>Hours:</strong> 10:00 - 16:00; Mon - Sat</p>
+                </div>
+          
+                <div class="col">
+                  <h4>Useful Links</h4>
+                  <a href="/pages/quiz/game.php">Quiz</a>
+                  <a href="#">Sign-in</a>
+                  <a href="/pages/e-commerce/estore.html">MarketPlace</a>
+                  <a href="/pages/map/map.html">Map</a>
+                </div>
+          
+                <div class="col">
+                  <div class="follow">
+                    <h4>Follow us</h4>
+                    <div class="icon">
+                      <i class="fab fa-facebook-f"></i>
+                      <i class="fab fa-twitter"></i>
+                      <i class="fab fa-instagram"></i>
+                      <i class="fab fa-pinterest-p"></i>
+                      <i class="fab fa-linkedin"></i>
+                    </div>
+                  </div>
+                </div>
+          
+                <div class="copyright">
+                  <p>Ⓒ SMU Software Engineering Group F</p>
+                </div>
+              </footer>
+        </div>
+    </body>
+
+
+</html>
+
+<script>
+  const url = "api/products/products/";
+
+  // Function to display products on the HTML page
+  function displayProducts(products) {
+    const productListDiv = document.getElementsByClassName("pro-container")[0];
+
+    // Iterate through the products and create HTML elements to display them
+    products.forEach((product) => {
+      const productDiv = document.createElement("div");
+      productDiv.className = "pro shop-item";
+      productDiv.innerHTML = `
+                    <img class="shop-item-image" src="${product.imageUrls}" alt="" />
+                    <div class="des">
+                      <h5 class="shop-item-title">${product.title}</h5>
+                      <h4 class="shop-item-price">$${product.price}</h4>
+                    </div>
+                    <button type="button" id="shoppingCart" class="cart shop-item-button">Add<span id="${product._id}"></span></button>
+                `;
+      productListDiv.appendChild(productDiv);
+    });
+  }
+
+  fetch(url)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(`Failed to fetch data. Status code: ${response.status}`);
+      }
+    })
+    .then((products) => {
+      //calls function displayproducts
+      displayProducts(products);
+
+      // this checks if the add button has been clicked. It calls the add cart item function
+      var addCartItemButtons = document.getElementsByClassName("shop-item-button");
+
+      for (var i = 0; i < addCartItemButtons.length; i++) {
+        var button = addCartItemButtons[i];
+        button.addEventListener("click", event => addItem(event, products));
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+</script>
+
+<script>
+  async function fetchUniqueId() {
+    try {
+      const response = await fetch("/generateUniqueId");
+      const data = await response.json();
+
+      // Display the retrieved ID
+      console.log(`Generated ID: ${data.id}`);
+      localStorage.setItem("sessionId", data.id);
+
+      let sessId = localStorage.getItem("sessionId");
+      createCart(sessId);
+    } catch (error) {
+      console.error("Error fetching unique ID:", error);
+    }
+  }
+
+  // Check if a session ID is already in local storage
+  let sessionId = localStorage.getItem("sessionId");
+
+  // If not, fetch a new one and store it
+  if (!sessionId) {
+    fetchUniqueId();
+  }
+
+  async function createCart(sessionId) {
+    try {
+      const response = await fetch("/api/carts/carts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sessionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Cart created:", data);
+    } catch (error) {
+      console.error("Error creating cart:", error);
+    }
+  }
+
+  function addItem(event, allProducts) {
+    const buttonClicked = event.target;
+    const clickedProductId = buttonClicked.querySelector('span').id;
+    const sessId = localStorage.getItem("sessionId");
+    const updatedItem = allProducts.find(item => item._id === clickedProductId);
+    const formattedProduct = {"product": updatedItem._id, "quantity": 1}
+    addItemFromCart(sessId, formattedProduct)
+    window.location.href = "./cart.html"
+  }
+
+</script>
+
+
+<script>
+// add to cart
+async function addItemFromCart(sessionId, item) {
+    try {
+      const response = await fetch("/api/carts/add", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sessionId, item }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Cart created:", data);
+    } catch (error) {
+      console.error("Error creating cart:", error);
+    }
+  }
+</script>
+
+

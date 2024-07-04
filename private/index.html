@@ -1,0 +1,293 @@
+<!--
+  Purpose: Admin Dashboard for Woodland Conservation Project
+  Author: 
+  Ricky McIntyre (A00453539) 
+-->
+<!DOCTYPE html>
+<span style="font-family: verdana, geneva, sans-serif;">
+  <html lang="en">
+
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <title>Admin DashBoard</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Font Awesome Cdn Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <nav>
+        <ul>
+          <!-- Navigation Bar -->
+          <li>
+            <a href="index.html" class="logo">
+              <img src="https://i.ibb.co/gzCVGzc/blacklogo.png" alt="">
+              <span class="nav-logo">Woodland Conservation</span>
+            </a>
+          </li>
+          <li>
+            <!-- Products Link -->
+            <a href="index.html">
+              <i class="fas fa-shopping-bag"></i>
+              <span class="nav-item">Products</span>
+            </a>
+          </li>
+          <li>
+            <!-- Logout Link -->
+            <a href="../login.html" class="logout">
+              <i class="fas fa-sign-out-alt"></i>
+              <span class="nav-item">Log out</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Main content section -->
+      <section class="main">
+        <!-- Top part of the main content w/ create new product button -->
+        <div class="main-top">
+          <h1>Products</h1>
+          <!-- Button to create a new product -->
+          <i class="fas fa-plus" id="addProductIcon" title="Create New Product" onclick="openAddProductPage()"></i>
+        </div>
+
+        <!-- Products section -->
+        <div class="main-products" id="productList">
+          <!-- Product cards will be dynamically added here -->
+        </div>
+
+        <!-- Previous page button -->
+        <button id="previousPageButton" class="nextButton" onclick="previousPage()">Previous Page</button>
+
+        <!-- Next page button -->
+        <button id="nextPageButton" class="nextButton" onclick="nextPage()">Next Page</button>
+
+      </section>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p id="confirmationText"></p>
+        <!-- Buttons for confirmation and cancellation -->
+        <button id="confirmBtn" onclick="confirmRemove('${product.title}')">Yes</button>
+        <button id="cancelBtn" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+
+    <script>
+      // Variables to track the current page and products per page
+      let currentPage = 1;
+      const productsPerPage = 10;
+
+      // Fetch and display products from the server
+      async function fetchAndDisplayProducts() {
+        try {
+          const response = await fetch('../api/products/products/');
+          console.log('Full response:', response);
+
+          if (!response.ok) {
+            console.error('Failed to fetch data. Status code:', response.status);
+            return;
+          }
+
+          const contentType = response.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            console.log('Response is not JSON.');
+            return;
+          }
+
+          const responseData = await response.json();
+          console.log('Response data:', responseData);
+
+          // Check if responseData is an array
+          if (!Array.isArray(responseData)) {
+            console.log('Invalid response data format. Products not found.');
+            return;
+          }
+
+          // Display products on the webpage
+          displayProducts(responseData);
+
+          // Update URL after displaying products
+          updateUrl();
+
+          return responseData; // Return data for further processing
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      // Display products on the webpage
+      function displayProducts(products) {
+        const productListDiv = document.getElementById("productList");
+        let currentRow;
+
+        // Clear the previous content
+        productListDiv.innerHTML = '';
+
+        // Calculate the start and end index based on the current page
+        const startIndex = (currentPage - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+
+        // Slice the products array to get the products for the current page
+        const productsToShow = products.slice(startIndex, endIndex);
+
+        // Iterate through the products to display
+        productsToShow.forEach((product, index) => {
+          // Create a new row every 5 products
+          if (index % 5 === 0) {
+            currentRow = document.createElement("div");
+            currentRow.classList.add("product-row");
+            productListDiv.appendChild(currentRow);
+          }
+
+          // Create product card
+          const productDiv = document.createElement("div");
+          productDiv.innerHTML = `
+            <!-- Create product card -->
+            <div class="card">
+              <div class="info-container">
+                <!-- Add a class to the product image for styling -->
+                <img src="${product.imageUrls || 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg'}" alt="Product Image" class="product-image">
+                <h3>${product.title}</h3>
+                <p>Price: $${product.price}</p>
+              </div>
+              <div class="button-container">
+                <!-- Buttons for editing and removing products -->
+                <button class="edit-button" onclick="openEditProductPage('${product._id}')">
+                  <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="remove-button" onclick="openModal('${product._id}')">
+                  <i class="fas fa-trash-alt"></i> Remove
+                </button>
+              </div>
+            </div>
+          `;
+
+          // Append product card to the current row
+          currentRow.appendChild(productDiv);
+        });
+
+        // Show/hide the "Previous Page" button based on the current page
+        const previousPageButton = document.getElementById('previousPageButton');
+        previousPageButton.style.display = currentPage > 1 ? 'block' : 'none';
+
+        // Show/hide the "Next Page" button based on the presence of products on the next page
+        const nextPageButton = document.getElementById('nextPageButton');
+        nextPageButton.style.display = endIndex < products.length ? 'block' : 'none';
+      }
+
+      // Event listener for the page load
+      document.addEventListener('DOMContentLoaded', async () => {
+        currentPage = getCurrentPageFromUrl();
+
+        // Fetch and display products
+        const products = await fetchAndDisplayProducts();
+
+        // Check if there are products on the next page
+        const startIndex = (currentPage - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const productsOnNextPage = products.slice(startIndex, endIndex).length > 0;
+
+        // Show/hide the "Next Page" button based on the presence of products
+        const nextPageButton = document.getElementById('nextPageButton');
+        nextPageButton.style.display = productsOnNextPage ? 'block' : 'none';
+      });
+
+      // Move to the next page of products
+      async function nextPage() {
+        currentPage++;
+        const products = await fetchAndDisplayProducts();
+
+        // Check if there are products on the next page
+        const startIndex = (currentPage - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const productsOnNextPage = products.slice(startIndex, endIndex).length > 0;
+
+        // Show/hide the "Next Page" button based on the presence of products
+        const nextPageButton = document.getElementById('nextPageButton');
+        nextPageButton.style.display = productsOnNextPage ? 'block' : 'none';
+      }
+
+      // Move to the previous page of products
+      function previousPage() {
+        if (currentPage > 1) {
+          currentPage--;
+          fetchAndDisplayProducts();
+        }
+      }
+
+      // Update the URL with the current page
+      function updateUrl() {
+        const url = new URL(window.location.href);
+        url.searchParams.set('page', currentPage);
+        window.history.pushState({}, '', url);
+      }
+
+      // Get the current page from the URL
+      function getCurrentPageFromUrl() {
+        const url = new URL(window.location.href);
+        const pageParam = url.searchParams.get('page');
+        return pageParam ? parseInt(pageParam, 10) : 1;
+      }
+
+      // Open a confirmation modal for removing a product
+      function openModal(productId) {
+        const modal = document.getElementById('confirmationModal');
+        const confirmationText = document.getElementById('confirmationText');
+        confirmationText.textContent = `Are you sure you want to remove product with ID ${productId}?`;
+        modal.style.display = 'block';
+        document.getElementById('confirmBtn').setAttribute('onclick', `confirmRemove('${productId}')`);
+      }
+
+      // Close the confirmation modal
+      function closeModal() {
+        const modal = document.getElementById('confirmationModal');
+        modal.style.display = 'none';
+      }
+
+      // Confirm the removal of a product
+      function confirmRemove(productId) {
+        console.log(`Product with ID "${productId}" will be removed.`);
+        removeProduct(productId);
+        closeModal();
+      }
+
+      // Remove a product using an HTTP DELETE request
+      async function removeProduct(productId) {
+        try {
+          const response = await fetch(`../api/products/products/${productId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`Failed to remove product. Status code: ${response.status}`);
+          }
+
+          // Reload products after successful removal
+          fetchAndDisplayProducts();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      // Redirect to the "add product" page
+      function openAddProductPage() {
+        window.location.href = 'add_product.html';
+      }
+
+      // Redirect to the "edit product" page with a specific product ID
+      function openEditProductPage(productId) {
+        window.location.href = `edit_product.html?productId=${productId}`;
+      }
+    </script>
+  </body>
+
+  </html>

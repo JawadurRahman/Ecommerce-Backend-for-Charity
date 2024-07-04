@@ -1,0 +1,384 @@
+/* Purpose: Define styles for the Admin dashboard */
+/* Author:
+    Ricky McIntyre (A00453539)
+*/
+
+/* Reset styles for all elements */
+style {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: verdana, geneva, sans-serif;
+}
+
+/* Body styles */
+body {
+  background: #f7f7f7;
+}
+
+/* Container styles */
+.container {
+  display: flex;
+}
+
+/* Navigation styles */
+nav {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  left: 0;
+  background: #fff;
+  width: 400px;
+  overflow: hidden;
+  box-shadow: 0 20px 35px rgba(10, 10, 10, 0.133);
+  height: 807px;
+}
+
+/* Woodland conservation logo and image*/
+.logo {
+  text-align: center;
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+/* Woodland Conservation logo image*/
+.logo img {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+}
+
+/* Woodland Conservation logo text*/
+.logo span {
+  font-weight: bold;
+  padding-left: 15px;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+/* unordered list in navigation menu */
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0px;
+}
+
+/* Items in navigation menu (logout & products)*/
+a {
+  position: relative;
+  color: rgb(67, 66, 66);
+  font-size: 20px;
+  display: table;
+  width: 280px;
+  padding: 15px;
+  text-decoration: none;
+  list-style: none;
+}
+
+/* Navigation icon styles */
+nav .fas {
+  position: relative;
+  width: 70px;
+  height: 40px;
+  top: 12px;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* Navigation menu item */
+.nav-item {
+  position: relative;
+  top: 12px;
+  text-decoration: none;
+}
+
+/* Woodland Conservation logo*/
+.nav-logo {
+  position: sticky;
+  top: 12px;
+  text-decoration: none;
+  margin-top: 11px;
+  margin-left: 5px;
+  color: #000;
+  text-align: left;
+}
+
+/* Hover effect for navigation links */
+a:hover {
+  background: #eee;
+}
+
+/* Logout link styles */
+.logout {
+  border-top: 1px solid #ccc;
+  position: absolute;
+  bottom: 0;
+}
+
+/* Main section styles */
+.main {
+  position: relative;
+  padding: 20px;
+  width: 100%;
+}
+
+/* Top part of the main content styles */
+.main-top {
+  display: flex;
+  width: 100%;
+  margin-top: 0px;
+}
+
+/* Add new product icon */
+.main-top i {
+  position: absolute;
+  right: 0;
+  margin: 20px 30px;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  font-size: 24px;
+}
+
+/* Products section styles */
+.main-products {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1px;
+  justify-content: flex-start;
+}
+
+/* Product cards */
+.main-products .card {
+  width: 190px;
+  height: 320px;
+  margin: 10px;
+  background: #fff;
+  text-align: center;
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Product row */
+.product-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 7px;
+  width: 100%;
+}
+
+/* Contains products name, image, price */
+.main-products .card .info-container {
+  height: 290px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Product image in product card*/
+.main-products .card .product-image {
+  width: 190px;
+  height: 230px;
+  object-fit: fit;
+}
+
+/*  Button container for product card */
+.main-products .card .button-container {
+  display: flex;
+  justify-content: space-between;
+  height: 46px;
+}
+
+/* Product name */
+.main-products .card h3 {
+  margin: 0px;
+  text-transform: capitalize;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 24px;
+}
+
+/* price in product card */
+.main-products .card p {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 8px;
+}
+
+/* Edit button styles */
+.main-products .card .edit-button {
+  background: rgb(255, 255, 255);
+  color: #000000;
+  padding: 8px 7px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 5px;
+  display: inline-block;
+  width: 48%;
+  flex: 1;
+}
+
+/*Edit button hover style*/
+.main-products .card .edit-button:hover {
+  background: rgb(231, 231, 231);
+  color: #000000;
+}
+
+/* Remove button styles */
+.main-products .card .remove-button {
+  background: rgb(255, 255, 255);
+  color: #cb0000;
+  padding: 8px 7px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 48%;
+  margin-left: 5px;
+}
+
+/*Remove button hover style*/
+.main-products .card .remove-button:hover {
+  background: rgb(231, 231, 231);
+  color: #ff4949;
+}
+
+/* card button icon */
+.main-products .card button i {
+  font-size: 12px;
+  padding: 1px;
+}
+
+/* card button hover effect */
+.main-products .card button:hover {
+  background: rgb(231, 231, 231);
+}
+
+/* card icon */
+.main-products .card i {
+  font-size: 22px;
+  padding: 10px;
+}
+
+/* Language specific styles */
+.html {
+  color: rgb(25, 94, 54);
+}
+
+.css {
+  color: rgb(104, 179, 35);
+}
+
+.js {
+  color: rgb(28, 98, 179);
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* Confirmation buttons in the modal */
+#confirmBtn,
+#cancelBtn {
+  background: #000;
+  color: #fff;
+  padding: 7px 40px;
+  border-radius: 10px;
+  margin-top: 1rem;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+#confirmBtn:hover,
+#cancelBtn:hover {
+  background: rgba(0, 0, 0, 0.842);
+}
+
+/* Form styles for consistency */
+.new-product-form,
+.edit-product-form {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 60px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Input styles */
+input[type="text"],
+input[type="number"],
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* Button styles */
+button,
+.nextButton {
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+button:hover,
+.nextButton:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Select styles */
+select,
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}

@@ -1,0 +1,157 @@
+<!--
+  Purpose: This page creates a new product through a form
+  Author: 
+  Ricky McIntyre (A00453539) 
+-->
+<!DOCTYPE html>
+<span style="font-family: verdana, geneva, sans-serif;">
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>Create New Product</title>
+        <link rel="stylesheet" href="style.css" />
+        <!-- Font Awesome Cdn Link -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    </head>
+
+    <body>
+        <div class="container">
+            <nav>
+                <ul>
+                    <!-- Navigation Bar -->
+                    <li>
+                        <a href="index.html" class="logo">
+                            <img src="https://i.ibb.co/gzCVGzc/blacklogo.png" alt="">
+                            <span class="nav-item">Woodland Conservation</span>
+                        </a>
+                    </li>
+                    <li>
+                        <!-- Products Link -->
+                        <a href="index.html">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span class="nav-item">Products</span>
+                        </a>
+                    </li>
+                    <li>
+                        <!-- Logout Link -->
+                        <a href="" class="logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="nav-item">Log out</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main content section -->
+            <section class="main">
+                <!-- Top part of the main content -->
+                <div class="main-top">
+                    <h1>Create New Product</h1>
+                </div>
+
+                <!-- Form for creating a new product -->
+                <form class="new-product-form highlight-rectangle" enctype="multipart/form-data">
+                    <!-- Input fields for product information -->
+                    <div class="form-group">
+                        <label for="productName">Name:</label>
+                        <input type="text" id="productName" name="productName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productDescription">Description:</label>
+                        <textarea id="productDescription" name="productDescription" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productPrice">Price:</label>
+                        <input type="number" id="productPrice" name="productPrice" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productCategory">Category:</label>
+                        <select id="productCategory" name="productCategory" required>
+                            <!-- Options for product categories -->
+                            <option value="1">Category 1</option>
+                            <option value="2">Category 2</option>
+                            <option value="3">Category 3</option>
+                            <option value="4">Category 4</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productImageUrl">Image URL:</label>
+                        <input type="url" id="productImageUrl" name="productImageUrl" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productPriceId">Price ID:</label>
+                        <input type="text" id="productPriceId" name="productPriceId" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productStockQuantity">Stock Quantity:</label>
+                        <input type="number" id="productStockQuantity" name="productStockQuantity" required>
+                    </div>
+
+                    <!-- Button to submit the form -->
+                    <button type="submit" onclick="handleFormSubmit(event)">Create Product</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- JS -->
+        <script>
+            // Function to handle form submission
+            async function handleFormSubmit(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Retrieve values from the form inputs
+                const productName = document.getElementById('productName').value;
+                const productDescription = document.getElementById('productDescription').value;
+                const productPrice = parseFloat(document.getElementById('productPrice').value);
+                const productCategory = document.getElementById('productCategory').value;
+                const productImageUrl = document.getElementById('productImageUrl').value;
+                const productPriceId = document.getElementById('productPriceId').value;
+                const productStockQuantity = document.getElementById('productStockQuantity').value;
+
+                // Create a data object with the form values
+                const formData = {
+                    title: productName,
+                    description: productDescription,
+                    price: productPrice,
+                    category: productCategory,
+                    imageUrls: productImageUrl, // Directly assign the URL string
+                    priceId: productPriceId,
+                    stockQuantity: productStockQuantity,
+                };
+
+                try {
+                    // Send a POST request to create a new product
+                    const response = await fetch('../api/products/products/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData),
+                    });
+
+                    if (!response.ok) {
+                        // Display an error message if the request fails
+                        const errorMessage = await response.text();
+                        throw new Error(`Failed to create product. Status code: ${response.status}. ${errorMessage}`);
+                    }
+
+                    // Product created successfully, redirect to index.html
+                    console.log('Product created successfully');
+                    window.location.href = 'index.html'; // Redirect to index.html
+                } catch (error) {
+                    // Log and handle any errors that occur during the process
+                    console.error(error);
+                }
+            }
+        </script>
+    </body>
+
+    </html>
+</span>

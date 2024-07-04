@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Thanks for your order!</title>
+</head>
+<body>
+  <section>
+    <p>
+      We appreciate your business! If you have any questions, please email
+      <a href="mailto:orders@example.com">orders@example.com</a>.
+    </p>
+    <a href="./"><button>Back to Shop</button></a>
+  </section>
+</body>
+</html>
+
+<script>
+    async function removeAllItemFromCart(sessionId) {
+      items = []
+      try {
+      const response = await fetch("/api/carts/carts", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sessionId, items }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Cart Emptied:", data);
+    } catch (error) {
+      console.error("Error creating cart:", error);
+    }
+  }
+
+  const sessId = localStorage.getItem("sessionId");
+  removeAllItemFromCart(sessId);
+
+</script>

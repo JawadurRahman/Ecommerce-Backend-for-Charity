@@ -1,3 +1,8 @@
+# Ecommerce Website
+Developed the backend for a local charity's e-commerce website using Node.js, Express, and MongoDB. Implemented login and registration features, as well as authentication to ensure only administrators can manage stock. Created RESTful APIs, enabling customers to add items to their cart and complete purchases securely through Stripe.
+
+
+
 # Running SERVER / Getting started
 
 ### download node if not already done
